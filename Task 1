@@ -6,6 +6,92 @@
     <title>To-Do List App</title>
     <link rel="stylesheet" href="style.css">
 </head>
+/* Basic styling for the To-Do List App */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-area {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+button.delete-btn {
+    background-color: #ff4d4d;
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+button.delete-btn:hover {
+    background-color: #cc0000;
+}
 <body>
     <div class="container">
         <h1>My To-Do List</h1>
@@ -25,3 +111,65 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+// Get the elements from the DOM
+const addTaskBtn = document.getElementById("add-task-btn");
+const taskInput = document.getElementById("task-input");
+const taskList = document.getElementById("task-list");
+
+// Function to create a new task
+function createTask(taskText) {
+    const li = document.createElement("li");
+
+    // Create a checkbox for marking completion
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    
+    // Create a span to hold the task text
+    const span = document.createElement("span");
+    span.textContent = taskText;
+
+    // Create a delete button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("delete-btn");
+
+    // Append elements to the li
+    li.appendChild(checkbox);
+    li.appendChild(span);
+    li.appendChild(deleteBtn);
+
+    // Add event listener to toggle task completion
+    checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+            span.classList.add("completed");
+        } else {
+            span.classList.remove("completed");
+        }
+    });
+
+    // Add event listener to delete task
+    deleteBtn.addEventListener("click", () => {
+        li.remove();
+    });
+
+    // Append the li to the task list
+    taskList.appendChild(li);
+}
+
+// Event listener for the Add Task button
+addTaskBtn.addEventListener("click", () => {
+    const taskText = taskInput.value.trim();
+    if (taskText !== "") {
+        createTask(taskText);
+        taskInput.value = ""; // Clear input field after adding
+    }
+});
+
+// Allow adding tasks by pressing Enter
+taskInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        addTaskBtn.click();
+    }
+});
+
